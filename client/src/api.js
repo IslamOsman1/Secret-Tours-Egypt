@@ -282,9 +282,11 @@ function saveInquiries(items) {
   return write(STORAGE_KEYS.inquiries, items);
 }
 
-function saveSettings(settings) {
+function saveSettings(settings, { notify = true } = {}) {
   const saved = write(STORAGE_KEYS.settings, mergeSettings(settings));
-  notifySettingsChanged();
+  if (notify) {
+    notifySettingsChanged();
+  }
   return saved;
 }
 
@@ -333,7 +335,7 @@ export const api = {
     if (remote) {
       if (path === '/tours') saveTours(remote.data || []);
       if (path === '/settings') {
-        const merged = saveSettings(remote.data || {});
+        const merged = saveSettings(remote.data || {}, { notify: false });
         return { data: merged };
       }
       if (path === '/inquiries') saveInquiries(remote.data || []);
