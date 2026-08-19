@@ -1,12 +1,27 @@
 {
   "services": {
     "web": {
-      "entrypoint": "client",
-      "routePrefix": "/"
+      "root": "client",
+      "entrypoint": "package.json"
     },
     "api": {
-      "entrypoint": "server",
-      "routePrefix": "/api"
+      "root": "server",
+      "entrypoint": "src/index.js",
+      "framework": "express"
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "api"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
+  ]
 }
