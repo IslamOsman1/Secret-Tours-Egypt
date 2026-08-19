@@ -2,8 +2,17 @@ import express from 'express';
 import slugify from 'slugify';
 import Tour from '../models/Tour.js';
 import { protect } from '../middleware/auth.js';
+import defaultTours from '../data/defaultTours.js';
 const router=express.Router();
-router.get('/',async(req,res)=>{try{const q={status:'published'};if(req.query.category)q.category=req.query.category;res.json(await Tour.find(q).sort({featured:-1,createdAt:-1}));}catch(err){res.status(500).json({message:err.message})}});
+
+async function ensureToursExist() {
+  const count = await Tour.countDocuments();
+  if (count === 0) {
+    await Tour.insertMany(defaultTours);
+  }
+}
+
+router.get('/',async(req,res)=>{try{await ensureToursExist();const q={status:'published'};if(req.query.category)q.category=req.query.category;res.json(await Tour.find(q).sort({featured:-1,createdAt:-1}));}catch(err){res.status(500).json({message:err.message})}});
 router.get('/:slug',async(req,res)=>{try{const tour=await Tour.findOne({slug:req.params.slug});if(!tour)return res.status(404).json({message:'Tour not found'});res.json(tour)}catch(err){res.status(500).json({message:err.message})}});
 router.post('/',protect,async(req,res)=>{try{const slug=req.body.slug||slugify(req.body.title,{lower:true,strict:true});res.status(201).json(await Tour.create({...req.body,slug}))}catch(err){res.status(400).json({message:err.message})}});
 router.put('/:id',protect,async(req,res)=>{try{const body={...req.body};if(body.title&&!body.slug)body.slug=slugify(body.title,{lower:true,strict:true});res.json(await Tour.findByIdAndUpdate(req.params.id,body,{new:true,runValidators:true}))}catch(err){res.status(400).json({message:err.message})}});

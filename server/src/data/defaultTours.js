@@ -1,0 +1,111 @@
+const defaultTours = [
+  {
+    title: '8 Days Cairo & Nile Cruise',
+    slug: '8-days-cairo-nile-cruise',
+    category: 'classic-tours',
+    city: 'Cairo, Luxor & Aswan',
+    duration: '8 Days / 7 Nights',
+    price: 1140,
+    oldPrice: 1290,
+    rating: 4.9,
+    reviews: 128,
+    featured: true,
+    badge: 'Best Seller',
+    image: 'https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=1200&q=85',
+    gallery: [
+      'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=1200&q=85',
+      'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1200&q=85'
+    ],
+    excerpt: 'Discover Cairo icons, fly south, and sail the Nile between Luxor and Aswan with private guided visits.',
+    highlights: ['Private Egyptologist guide', '4 nights Nile cruise', 'Airport assistance', 'Daily breakfast'],
+    itinerary: [
+      { day: 1, title: 'Welcome to Cairo', text: 'Airport meet and assist, private transfer and hotel check-in.' },
+      { day: 2, title: 'Pyramids and Grand Egyptian Museum', text: 'Explore Giza, the Sphinx and Egypt legendary ancient collection.' },
+      { day: 3, title: 'Fly to Luxor', text: 'Board your Nile cruise and visit Karnak and Luxor temples.' },
+      { day: 4, title: 'West Bank of Luxor', text: 'Valley of the Kings, Hatshepsut Temple and Colossi of Memnon.' },
+      { day: 5, title: 'Edfu and Kom Ombo', text: 'Sail south and explore two remarkable riverside temples.' },
+      { day: 6, title: 'Aswan', text: 'Philae Temple, High Dam and a relaxed felucca experience.' },
+      { day: 7, title: 'Return to Cairo', text: 'Optional Abu Simbel, then return flight to Cairo.' },
+      { day: 8, title: 'Departure', text: 'Private transfer to Cairo International Airport.' }
+    ],
+    status: 'published'
+  },
+  {
+    title: '5 Days Luxury Nile Cruise',
+    slug: 'luxury-nile-cruise-5-days',
+    category: 'nile-cruises',
+    city: 'Luxor to Aswan',
+    duration: '5 Days / 4 Nights',
+    price: 790,
+    rating: 4.8,
+    reviews: 94,
+    featured: true,
+    badge: 'Luxury',
+    image: 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=1200&q=85',
+    excerpt: 'A refined Nile journey with elegant cabins, full-board dining and expert-guided sightseeing.',
+    highlights: ['Luxury cabin', 'Full board meals', 'Small group tours', 'All sightseeing transfers'],
+    status: 'published'
+  },
+  {
+    title: 'Private Cairo Highlights Day Tour',
+    slug: 'cairo-private-day-tour',
+    category: 'day-trips',
+    city: 'Cairo & Giza',
+    duration: '10 Hours',
+    price: 135,
+    rating: 5,
+    reviews: 72,
+    featured: true,
+    badge: 'Top Rated',
+    image: 'https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=1200&q=85',
+    excerpt: 'See the Pyramids, Sphinx, Old Cairo and bustling local streets with your own Egyptologist.',
+    highlights: ['Private vehicle', 'Expert guide', 'Hotel pickup', 'Flexible itinerary'],
+    status: 'published'
+  },
+  {
+    title: 'White Desert Overnight Adventure',
+    slug: 'white-desert-camping',
+    category: 'desert-safari',
+    city: 'Bahariya Oasis',
+    duration: '2 Days / 1 Night',
+    price: 250,
+    rating: 4.9,
+    reviews: 61,
+    featured: true,
+    badge: 'Adventure',
+    image: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?auto=format&fit=crop&w=1200&q=85',
+    excerpt: 'Camp under the stars among surreal chalk formations with a local Bedouin team.',
+    highlights: ['4x4 safari', 'Desert camp', 'Meals included', 'Bedouin guide'],
+    status: 'published'
+  },
+  {
+    title: 'Alexandria Private Day Trip',
+    slug: 'alexandria-day-trip',
+    category: 'day-trips',
+    city: 'Alexandria',
+    duration: '12 Hours',
+    price: 155,
+    rating: 4.7,
+    reviews: 49,
+    image: 'https://images.unsplash.com/photo-1571401835393-8c5f35328320?auto=format&fit=crop&w=1200&q=85',
+    excerpt: 'A Mediterranean day of catacombs, the Bibliotheca Alexandrina, citadel views and seafood.',
+    highlights: ['Private transport', 'Local guide', 'Flexible pickup', 'Coastal highlights'],
+    status: 'published'
+  },
+  {
+    title: 'Red Sea Luxury Escape',
+    slug: 'red-sea-luxury-escape',
+    category: 'classic-tours',
+    city: 'Hurghada',
+    duration: '4 Days / 3 Nights',
+    price: 620,
+    rating: 4.8,
+    reviews: 83,
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=85',
+    excerpt: 'Slow down by the Red Sea with a five-star stay, private airport transfer and optional sea adventures.',
+    highlights: ['5-star hotel', 'Breakfast', 'Airport transfer', 'Optional snorkeling'],
+    status: 'published'
+  }
+];
+
+export default defaultTours;

@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   const nav = useNavigate();
 
   useEffect(() => {
-    const loadTours = () => api.get('/tours').then(r => r.data?.length && setItems(r.data)).catch(() => {});
+    const loadTours = () => api.get('/tours').then(r => setItems(Array.isArray(r.data) ? r.data : getStoredTours())).catch(() => {});
     const loadInquiries = () => api.get('/inquiries').then(r => setInquiries(r.data)).catch(() => {});
     loadTours();
     loadInquiries();

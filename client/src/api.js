@@ -235,7 +235,9 @@ function mergeSettings(settings) {
 }
 
 export function getStoredTours() {
-  return read(STORAGE_KEYS.tours, seedTours).map(normalizeTour);
+  const stored = read(STORAGE_KEYS.tours, seedTours);
+  const tours = Array.isArray(stored) && stored.length ? stored : seedTours;
+  return tours.map(normalizeTour);
 }
 
 export function getStoredInquiries() {
