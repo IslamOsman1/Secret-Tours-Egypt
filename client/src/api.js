@@ -7,7 +7,7 @@ const STORAGE_KEYS = {
   adminToken: 'ste_admin_token',
 };
 
-const API_BASE = String(import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const API_BASE = String(import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
 const REMOTE_ENABLED = Boolean(API_BASE);
 
 export const TOURS_UPDATED_EVENT = 'ste:tours-updated';
