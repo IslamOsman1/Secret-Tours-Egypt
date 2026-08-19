@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom';
 import { Menu, X, Globe2, Phone, ChevronDown, Instagram, Facebook, Youtube, MessageCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -163,6 +163,12 @@ export default function SiteLayout() {
   const wa = settings.whatsapp.replace(/\D/g, '') || import.meta.env.VITE_WHATSAPP_NUMBER || '201000000000';
 
   useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [location.pathname]);
 
