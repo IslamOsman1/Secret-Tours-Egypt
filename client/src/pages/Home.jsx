@@ -76,8 +76,8 @@ export default function Home() {
       </div>
     </section>
 
-    {settings.countdown.enabled && countdown && countdownTours.length > 0 && <section className="countdown-strip"><div className="container countdown-panel">
-      <div className="countdown-copy"><span className="eyebrow">Special departures</span><h2>{settings.countdown.title}</h2><p>{settings.countdown.subtitle}</p><div className="countdown-tour-tags">{countdownTours.map(tour => <span key={tour._id}>{tour.title}</span>)}</div></div>
+    {settings.countdown.enabled && countdown && <section className="countdown-strip"><div className="container countdown-panel">
+      <div className="countdown-copy"><span className="eyebrow">Special departures</span><h2>{settings.countdown.title}</h2><p>{settings.countdown.subtitle}</p>{countdownTours.length > 0 && <div className="countdown-tour-tags">{countdownTours.map(tour => <span key={tour._id}>{tour.title}</span>)}</div>}</div>
       <div className="countdown-timer"><div><strong>{String(countdown.days).padStart(2, '0')}</strong><span>Days</span></div><div><strong>{String(countdown.hours).padStart(2, '0')}</strong><span>Hours</span></div><div><strong>{String(countdown.minutes).padStart(2, '0')}</strong><span>Minutes</span></div><div><strong>{String(countdown.seconds).padStart(2, '0')}</strong><span>Seconds</span></div></div>
       <Link className="btn btn-primary countdown-cta" to={countdownLink}>{settings.countdown.ctaLabel}<ArrowRight size={18}/></Link>
     </div></section>}

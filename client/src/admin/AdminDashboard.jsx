@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Map, MessageSquareText, Images, Settings, LogOut, Plus, Search, Pencil, Trash2, Eye, UploadCloud, Menu, X, House, CircleHelp, MapPinned, NotebookPen, Phone, PlaneTakeoff, Globe } from 'lucide-react';
+import { LayoutDashboard, Map, MessageSquareText, Images, Settings, LogOut, Plus, Search, Pencil, Trash2, Eye, UploadCloud, Menu, X, House, CircleHelp, MapPinned, NotebookPen, Phone, PlaneTakeoff, Globe, MapIcon, TimerReset } from 'lucide-react';
 import { api, getStoredSettings, getStoredTours, SETTINGS_UPDATED_EVENT, TOURS_UPDATED_EVENT } from '../api';
 
 const navGroups = [
@@ -17,6 +17,8 @@ const navGroups = [
     title: 'Site Content',
     items: [
       ['general', 'General', Settings],
+      ['footer', 'Footer', MapIcon],
+      ['campaign', 'Campaign', TimerReset],
       ['home', 'Home Page', House],
       ['about', 'About Page', CircleHelp],
       ['contact', 'Contact Page', Phone],
@@ -165,16 +167,21 @@ function SettingsPanel({ section, tours }) {
       <div className="field-row"><div><label>Company name</label><input value={form.companyName} onChange={event => update('companyName', event.target.value)}/></div><div><label>WhatsApp</label><input value={form.whatsapp} onChange={event => update('whatsapp', event.target.value)}/></div></div>
       <div className="field-row"><div><label>Public email</label><input value={form.publicEmail} onChange={event => update('publicEmail', event.target.value)}/></div><div><label>Office location</label><input value={form.officeLocation} onChange={event => update('officeLocation', event.target.value)}/></div></div>
       <div className="field-row"><div><label>Default currency</label><select value={form.currency} onChange={event => update('currency', event.target.value)}><option>USD</option><option>EUR</option><option>GBP</option></select></div><div><label>Footer description</label><input value={form.footerDescription} onChange={event => update('footerDescription', event.target.value)}/></div></div>
-      <div className="settings-divider"></div>
+    </>}
+
+    {section === 'footer' && <>
       <h2>Footer map</h2>
       <label className="toggle-row"><input type="checkbox" checked={form.footerMap.enabled} onChange={event => updateMap('enabled', event.target.checked)}/><span>Show map in footer</span></label>
       <div className="field-row"><div><label>Map title</label><input value={form.footerMap.title} onChange={event => updateMap('title', event.target.value)}/></div><div><label>Map embed URL</label><input value={form.footerMap.embedUrl} onChange={event => updateMap('embedUrl', event.target.value)}/></div></div>
-      <div className="settings-divider"></div>
+    </>}
+
+    {section === 'campaign' && <>
       <h2>Hero countdown campaign</h2>
       <label className="toggle-row"><input type="checkbox" checked={form.countdown.enabled} onChange={event => updateCountdown('enabled', event.target.checked)}/><span>Enable countdown below hero</span></label>
       <div className="field-row"><div><label>Campaign title</label><input value={form.countdown.title} onChange={event => updateCountdown('title', event.target.value)}/></div><div><label>Button label</label><input value={form.countdown.ctaLabel} onChange={event => updateCountdown('ctaLabel', event.target.value)}/></div></div>
       <div className="field-row"><div><label>End date & time</label><input type="datetime-local" value={form.countdown.endDate} onChange={event => updateCountdown('endDate', event.target.value)}/></div><div><label>Selected tours</label><div className="selected-count">{form.countdown.selectedTourIds.length} tours selected</div></div></div>
       <label>Campaign subtitle</label><textarea rows="3" value={form.countdown.subtitle} onChange={event => updateCountdown('subtitle', event.target.value)}/>
+      <p className="save-note">You can leave tour selection empty. The countdown will still appear and the button will open the tours page.</p>
       <div className="tour-picker">{tours.map(tour => <label key={tour._id} className="tour-picker-item"><input type="checkbox" checked={form.countdown.selectedTourIds.includes(tour._id)} onChange={() => toggleTour(tour._id)}/><div><strong>{tour.title}</strong><small>{tour.city} • ${tour.price}</small></div></label>)}</div>
     </>}
 
