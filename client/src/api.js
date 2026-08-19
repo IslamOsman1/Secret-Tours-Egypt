@@ -177,6 +177,12 @@ function getAdminToken() {
   return localStorage.getItem(STORAGE_KEYS.adminToken) || '';
 }
 
+function isLocalEnvironment() {
+  if (typeof window === 'undefined') return true;
+  const host = window.location.hostname;
+  return host === 'localhost' || host === '127.0.0.1';
+}
+
 function notifyToursChanged() {
   if (typeof window === 'undefined') return;
   window.dispatchEvent(new Event(TOURS_UPDATED_EVENT));
@@ -332,6 +338,10 @@ export const api = {
         return remote;
       }
 
+      if (!isLocalEnvironment()) {
+        return reject('Admin login is unavailable because the API is not connected.', 503);
+      }
+
       const email = payload?.email?.trim().toLowerCase();
       const password = payload?.password;
       if (email !== demoAdmin.email || password !== demoAdmin.password) {
@@ -366,6 +376,10 @@ export const api = {
         return remote;
       }
 
+      if (!isLocalEnvironment()) {
+        return reject('Tour changes could not be saved because the API is not connected.', 503);
+      }
+
       const tour = normalizeTour({
         _id: `tour-${Date.now()}`,
         featured: true,
@@ -380,6 +394,10 @@ export const api = {
     if (path === '/upload') {
       const remote = await tryRemote('POST', path, { payload, auth: true, isFormData: true });
       if (remote) return remote;
+
+      if (!isLocalEnvironment()) {
+        return reject('Image upload is unavailable because the API is not connected.', 503);
+      }
 
       const file = payload?.get?.('image');
       if (!file) return reject('No image selected.', 400);
@@ -397,6 +415,10 @@ export const api = {
         return { data: merged };
       }
 
+      if (!isLocalEnvironment()) {
+        return reject('Settings were not saved to the server. Please check the API and database connection.', 503);
+      }
+
       const settings = saveSettings(payload);
       return withDelay(settings);
     }
@@ -412,6 +434,10 @@ export const api = {
         saveTours(getStoredTours().filter(item => item._id !== id));
       }
       return remote;
+    }
+
+    if (!isLocalEnvironment()) {
+      return reject('Delete action could not be completed because the API is not connected.', 503);
     }
 
     if (!path.startsWith('/tours/')) return reject(`Unsupported DELETE ${path}`, 404);

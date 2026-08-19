@@ -128,6 +128,7 @@ function Media() {
 function SettingsPanel({ section, tours }) {
   const [form, setForm] = useState(() => getStoredSettings());
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const load = () => api.get('/settings').then(response => setForm(response.data)).catch(() => {});
@@ -149,9 +150,15 @@ function SettingsPanel({ section, tours }) {
 
   const submit = async event => {
     event.preventDefault();
-    await api.post('/settings', form);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2200);
+    setError('');
+    try {
+      await api.post('/settings', form);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2200);
+    } catch (err) {
+      setSaved(false);
+      setError(err?.response?.data?.message || 'Settings could not be saved.');
+    }
   };
 
   const homeTestimonials = form.home.testimonials?.length ? form.home.testimonials : homeTestimonialsFallback;
@@ -258,6 +265,7 @@ function SettingsPanel({ section, tours }) {
     </>}
 
     {saved && <div className="save-note">Settings saved.</div>}
+    {error && <div className="save-note">{error}</div>}
     <button className="btn btn-primary">Save changes</button>
   </form></div>;
 }

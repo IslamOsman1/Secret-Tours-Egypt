@@ -4,6 +4,7 @@ import { Menu, X, Globe2, Phone, ChevronDown, Instagram, Facebook, Youtube, Mess
 import { useTranslation } from 'react-i18next';
 import { languages } from '../i18n';
 import useSiteSettings from '../hooks/useSiteSettings';
+import { SETTINGS_UPDATED_EVENT, TOURS_UPDATED_EVENT } from '../api';
 
 function applyGoogleTranslation(code) {
   const combo = document.querySelector('.goog-te-combo');
@@ -46,6 +47,24 @@ function ensureGoogleTranslate() {
   script.async = true;
   script.dataset.googleTranslate = 'true';
   document.body.appendChild(script);
+}
+
+function scheduleTranslationRefresh(code) {
+  if (code === 'en') {
+    window.setTimeout(() => applyGoogleTranslation('en'), 250);
+    return () => {};
+  }
+
+  const delays = [350, 1200, 2400];
+  const timers = delays.map(delay =>
+    window.setTimeout(() => {
+      if (!applyGoogleTranslation(code)) {
+        window.setTimeout(() => applyGoogleTranslation(code), 900);
+      }
+    }, delay)
+  );
+
+  return () => timers.forEach(timer => window.clearTimeout(timer));
 }
 
 function Header() {
@@ -144,22 +163,29 @@ export default function SiteLayout() {
   const wa = settings.whatsapp.replace(/\D/g, '') || import.meta.env.VITE_WHATSAPP_NUMBER || '201000000000';
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname]);
+
+  useEffect(() => {
     ensureGoogleTranslate();
     syncGoogleTranslateCookie(i18n.language || 'en');
-
-    if (i18n.language === 'en') {
-      setTimeout(() => applyGoogleTranslation('en'), 250);
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      if (!applyGoogleTranslation(i18n.language)) {
-        setTimeout(() => applyGoogleTranslation(i18n.language), 900);
-      }
-    }, 350);
-
-    return () => clearTimeout(timer);
+    return scheduleTranslationRefresh(i18n.language || 'en');
   }, [i18n.language, location.pathname]);
+
+  useEffect(() => {
+    const refresh = () => {
+      syncGoogleTranslateCookie(i18n.language || 'en');
+      scheduleTranslationRefresh(i18n.language || 'en');
+    };
+
+    window.addEventListener(SETTINGS_UPDATED_EVENT, refresh);
+    window.addEventListener(TOURS_UPDATED_EVENT, refresh);
+
+    return () => {
+      window.removeEventListener(SETTINGS_UPDATED_EVENT, refresh);
+      window.removeEventListener(TOURS_UPDATED_EVENT, refresh);
+    };
+  }, [i18n.language]);
 
   return <div><div id="google_translate_element" hidden></div><Header/><main><Outlet/></main><Footer/><a className="wa-float" href={`https://wa.me/${wa}`} target="_blank" rel="noreferrer"><MessageCircle/></a></div>;
 }

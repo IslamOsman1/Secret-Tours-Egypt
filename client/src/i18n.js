@@ -2,39 +2,260 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 export const languages = [
-  ['en','English','🇬🇧'], ['ar','العربية','🇪🇬'], ['es','Español','🇪🇸'], ['fr','Français','🇫🇷'],
-  ['de','Deutsch','🇩🇪'], ['it','Italiano','🇮🇹'], ['pt','Português','🇵🇹'], ['ru','Русский','🇷🇺'],
-  ['tr','Türkçe','🇹🇷'], ['zh','中文','🇨🇳'], ['ja','日本語','🇯🇵'], ['ko','한국어','🇰🇷'],
-  ['hi','हिन्दी','🇮🇳'], ['nl','Nederlands','🇳🇱'], ['pl','Polski','🇵🇱'], ['id','Bahasa Indonesia','🇮🇩']
+  ['en', 'English', 'GB'],
+  ['ar', 'العربية', 'EG'],
+  ['es', 'Español', 'ES'],
+  ['fr', 'Français', 'FR'],
+  ['de', 'Deutsch', 'DE'],
+  ['it', 'Italiano', 'IT'],
+  ['pt', 'Português', 'PT'],
+  ['ru', 'Русский', 'RU'],
+  ['tr', 'Türkçe', 'TR'],
+  ['zh', '中文', 'CN'],
+  ['ja', '日本語', 'JP'],
+  ['ko', '한국어', 'KR'],
+  ['hi', 'हिन्दी', 'IN'],
+  ['nl', 'Nederlands', 'NL'],
+  ['pl', 'Polski', 'PL'],
+  ['id', 'Bahasa Indonesia', 'ID']
 ];
 
 const base = {
-  nav: { home: 'Home', tours: 'Tours', cruises: 'Nile Cruises', dayTrips: 'Day Trips', destinations: 'Destinations', blog: 'Travel Guide', about: 'About', tailor: 'Tailor My Trip' },
-  hero: { eyebrow: 'Private journeys. Local experts. Real Egypt.', title: 'Discover the Egypt most travelers never see.', text: 'Handcrafted private tours, Nile cruises and tailor-made journeys with 24/7 local support.', cta: 'Explore Tours', secondary: 'Design My Trip' },
-  common: { from: 'From', person: '/ person', viewTour: 'View Tour', featured: 'Featured journeys', why: 'Why travel with us', reviews: 'Traveler stories', blog: 'Travel inspiration', contact: 'Talk to an Egypt expert' }
+  nav: {
+    home: 'Home',
+    tours: 'Tours',
+    cruises: 'Nile Cruises',
+    dayTrips: 'Day Trips',
+    destinations: 'Destinations',
+    blog: 'Travel Guide',
+    about: 'About',
+    tailor: 'Tailor My Trip'
+  },
+  hero: {
+    eyebrow: 'Private journeys. Local experts. Real Egypt.',
+    title: 'Discover the Egypt most travelers never see.',
+    text: 'Handcrafted private tours, Nile cruises and tailor-made journeys with 24/7 local support.',
+    cta: 'Explore Tours',
+    secondary: 'Design My Trip'
+  },
+  common: {
+    from: 'From',
+    person: '/ person',
+    viewTour: 'View Tour',
+    featured: 'Featured journeys',
+    why: 'Why travel with us',
+    reviews: 'Traveler stories',
+    blog: 'Travel inspiration',
+    contact: 'Talk to an Egypt expert',
+    readGuide: 'Read guide',
+    bookNow: 'Book now'
+  },
+  homePage: {
+    countdownEyebrow: 'Special departures',
+    days: 'Days',
+    hours: 'Hours',
+    minutes: 'Minutes',
+    seconds: 'Seconds',
+    whereToGo: 'Where do you want to go?',
+    travelStyle: 'Travel style',
+    tripLength: 'Trip length',
+    findTrip: 'Find my trip',
+    allEgypt: 'All Egypt',
+    classicEgypt: 'Classic Egypt',
+    nileCruise: 'Nile Cruise',
+    luxury: 'Luxury',
+    adventure: 'Adventure',
+    family: 'Family',
+    featuredEyebrow: 'Handpicked by our Egypt experts',
+    viewAllTours: 'View all tours',
+    reviewsEyebrow: 'Real guests, real journeys',
+    reviewsText: 'A few words from travelers who explored Egypt with us.',
+    blogEyebrow: 'Plan smarter',
+    blogText: 'Practical Egypt travel advice from people on the ground.',
+    allArticles: 'All articles',
+    faqEyebrow: 'Good to know',
+    finalEyebrow: 'Your Egypt story starts here'
+  },
+  toursPage: {
+    eyebrow: 'Explore Egypt',
+    title: 'Egypt Tours & Travel Packages',
+    intro: 'Private, flexible journeys designed by local experts. Every itinerary can be adapted to you.',
+    searchPlaceholder: 'Search by tour or destination',
+    recommended: 'Recommended',
+    priceLow: 'Price: low to high',
+    topRated: 'Top rated',
+    journeysCount: 'journeys',
+    pricesNote: 'All prices shown per person in USD',
+    emptyTitle: 'No journeys found',
+    emptyText: 'Try a different destination or search term.'
+  },
+  tourDetails: {
+    back: 'Back to tours',
+    privateTour: 'Private Tour',
+    reviews: 'reviews',
+    overviewEyebrow: 'Journey overview',
+    overviewTitle: 'A deeper way to experience Egypt',
+    overviewText: 'This private journey blends iconic sights with a relaxed local rhythm. Your guide and operations team can adapt timing and optional experiences to suit your pace.',
+    highlights: 'Highlights',
+    itinerary: 'Day-by-day itinerary',
+    day: 'Day',
+    included: 'Included',
+    notIncluded: 'Not included',
+    guide: 'Private licensed guide',
+    transfers: 'Air-conditioned transfers',
+    accommodation: 'Accommodation as listed',
+    assist: 'Meet & assist service',
+    flights: 'International flights',
+    expenses: 'Personal expenses',
+    insurance: 'Travel insurance',
+    activities: 'Optional activities',
+    planEyebrow: 'Plan this journey',
+    requestTitle: 'Request your trip',
+    requestText: "Tell us when you're travelling. We'll confirm availability and personalise the details.",
+    travelDate: 'Travel date',
+    travelers: 'Travelers',
+    travelerOne: '1 traveler',
+    travelerTwo: '2 travelers',
+    travelerThree: '3 travelers',
+    travelerFour: '4 travelers',
+    travelerFive: '5+ travelers',
+    yourName: 'Your name',
+    yourContact: 'Email or WhatsApp',
+    requestAvailability: 'Request availability',
+    whatsappNow: 'Prefer WhatsApp? Chat now',
+    noPayment: 'No payment required to request availability.'
+  }
+};
+
+const arabic = {
+  nav: {
+    home: 'الرئيسية',
+    tours: 'الرحلات',
+    cruises: 'رحلات النيل',
+    dayTrips: 'الرحلات اليومية',
+    destinations: 'الوجهات',
+    blog: 'دليل السفر',
+    about: 'من نحن',
+    tailor: 'صمم رحلتك'
+  },
+  hero: {
+    eyebrow: 'رحلات خاصة. خبراء محليون. مصر الحقيقية.',
+    title: 'اكتشف مصر التي لا يراها معظم المسافرين.',
+    text: 'رحلات خاصة، كروز نيلية، وبرامج مصممة حسب الطلب مع دعم محلي على مدار الساعة.',
+    cta: 'استكشف الرحلات',
+    secondary: 'صمم رحلتي'
+  },
+  common: {
+    from: 'ابتداء من',
+    person: '/ للفرد',
+    viewTour: 'عرض الرحلة',
+    featured: 'رحلات مميزة',
+    why: 'لماذا تسافر معنا',
+    reviews: 'آراء المسافرين',
+    blog: 'إلهام السفر',
+    contact: 'تحدث مع خبير سفر',
+    readGuide: 'اقرأ الدليل',
+    bookNow: 'احجز الآن'
+  },
+  homePage: {
+    countdownEyebrow: 'عروض خاصة',
+    days: 'أيام',
+    hours: 'ساعات',
+    minutes: 'دقائق',
+    seconds: 'ثواني',
+    whereToGo: 'إلى أين تريد الذهاب؟',
+    travelStyle: 'نوع الرحلة',
+    tripLength: 'مدة الرحلة',
+    findTrip: 'ابحث عن رحلتي',
+    allEgypt: 'كل مصر',
+    classicEgypt: 'مصر الكلاسيكية',
+    nileCruise: 'كروز نيلي',
+    luxury: 'فاخر',
+    adventure: 'مغامرة',
+    family: 'عائلية',
+    featuredEyebrow: 'مختارة بعناية من خبرائنا في مصر',
+    viewAllTours: 'عرض كل الرحلات',
+    reviewsEyebrow: 'ضيوف حقيقيون، رحلات حقيقية',
+    reviewsText: 'بعض الكلمات من مسافرين اكتشفوا مصر معنا.',
+    blogEyebrow: 'خطط بذكاء',
+    blogText: 'نصائح عملية للسفر إلى مصر من خبراء على الأرض.',
+    allArticles: 'كل المقالات',
+    faqEyebrow: 'معلومات مهمة',
+    finalEyebrow: 'رحلتك إلى مصر تبدأ هنا'
+  },
+  toursPage: {
+    eyebrow: 'استكشف مصر',
+    title: 'رحلات مصر والباقات السياحية',
+    intro: 'رحلات خاصة ومرنة يصممها خبراء محليون. يمكن تعديل كل برنامج ليناسبك.',
+    searchPlaceholder: 'ابحث باسم الرحلة أو الوجهة',
+    recommended: 'موصى به',
+    priceLow: 'السعر: من الأقل إلى الأعلى',
+    topRated: 'الأعلى تقييما',
+    journeysCount: 'رحلة',
+    pricesNote: 'كل الأسعار المعروضة للفرد بالدولار',
+    emptyTitle: 'لا توجد رحلات',
+    emptyText: 'جرّب وجهة أخرى أو كلمة بحث مختلفة.'
+  },
+  tourDetails: {
+    back: 'العودة إلى الرحلات',
+    privateTour: 'رحلة خاصة',
+    reviews: 'تقييم',
+    overviewEyebrow: 'نظرة عامة',
+    overviewTitle: 'طريقة أعمق لاكتشاف مصر',
+    overviewText: 'تمزج هذه الرحلة الخاصة بين المعالم الشهيرة وإيقاع محلي مريح. يمكن للمرشد وفريق التشغيل تعديل التوقيت والأنشطة الاختيارية بما يناسب سرعتك.',
+    highlights: 'أبرز المميزات',
+    itinerary: 'البرنامج يومًا بيوم',
+    day: 'اليوم',
+    included: 'يشمل',
+    notIncluded: 'لا يشمل',
+    guide: 'مرشد سياحي خاص معتمد',
+    transfers: 'تنقلات مكيفة',
+    accommodation: 'الإقامة حسب البرنامج',
+    assist: 'خدمة الاستقبال والمساعدة',
+    flights: 'الطيران الدولي',
+    expenses: 'المصاريف الشخصية',
+    insurance: 'تأمين السفر',
+    activities: 'الأنشطة الاختيارية',
+    planEyebrow: 'خطط لهذه الرحلة',
+    requestTitle: 'اطلب رحلتك',
+    requestText: 'أخبرنا بموعد سفرك وسنؤكد التوفر ونخصص التفاصيل لك.',
+    travelDate: 'تاريخ السفر',
+    travelers: 'المسافرون',
+    travelerOne: 'مسافر واحد',
+    travelerTwo: 'مسافران',
+    travelerThree: '3 مسافرين',
+    travelerFour: '4 مسافرين',
+    travelerFive: '5+ مسافرين',
+    yourName: 'اسمك',
+    yourContact: 'البريد أو واتساب',
+    requestAvailability: 'اطلب التوفر',
+    whatsappNow: 'تفضل واتساب؟ تحدث الآن',
+    noPayment: 'لا يلزم أي دفع لطلب التوفر.'
+  }
 };
 
 const translations = {
   en: base,
-  ar: { nav: { home:'الرئيسية',tours:'البرامج السياحية',cruises:'رحلات النيل',dayTrips:'رحلات اليوم الواحد',destinations:'الوجهات',blog:'دليل السفر',about:'من نحن',tailor:'صمّم رحلتك' }, hero:{eyebrow:'رحلات خاصة. خبراء محليون. مصر الحقيقية.',title:'اكتشف مصر التي لا يراها معظم المسافرين.',text:'برامج سياحية خاصة ورحلات نيلية وتجارب مصممة حسب طلبك مع دعم محلي 24/7.',cta:'استكشف الرحلات',secondary:'صمّم رحلتي'}, common:{from:'ابتداءً من',person:'/ للفرد',viewTour:'عرض الرحلة',featured:'رحلات مميزة',why:'لماذا تسافر معنا',reviews:'آراء المسافرين',blog:'دليل وإلهام للسفر',contact:'تحدث مع خبير سياحي'} },
-  es: { hero:{title:'Descubre el Egipto que la mayoría de viajeros nunca ve.',text:'Tours privados, cruceros por el Nilo y viajes a medida con asistencia local 24/7.'} },
-  fr: { hero:{title:"Découvrez l’Égypte que la plupart des voyageurs ne voient jamais.",text:'Circuits privés, croisières sur le Nil et voyages sur mesure avec assistance locale 24h/24.'} },
-  de: { hero:{title:'Entdecke das Ägypten, das die meisten Reisenden nie sehen.',text:'Private Touren, Nilkreuzfahrten und maßgeschneiderte Reisen mit lokalem 24/7-Support.'} },
-  it: { hero:{title:"Scopri l'Egitto che la maggior parte dei viaggiatori non vede mai.",text:'Tour privati, crociere sul Nilo e viaggi su misura con assistenza locale 24/7.'} },
-  pt: { hero:{title:'Descubra o Egito que a maioria dos viajantes nunca vê.',text:'Passeios privados, cruzeiros no Nilo e viagens personalizadas com suporte local 24/7.'} },
-  ru: { hero:{title:'Откройте Египет, который большинство путешественников не видит.',text:'Частные туры, круизы по Нилу и индивидуальные маршруты с местной поддержкой 24/7.'} },
-  tr: { hero:{title:'Çoğu gezginin hiç görmediği Mısır’ı keşfedin.',text:'Özel turlar, Nil gezileri ve 7/24 yerel destekle size özel seyahatler.'} },
-  zh: { hero:{title:'探索大多数旅行者从未见过的埃及。',text:'私人旅行、尼罗河游轮和定制行程，并提供全天候本地支持。'} },
-  ja: { hero:{title:'多くの旅行者がまだ知らないエジプトを発見。',text:'プライベートツアー、ナイルクルーズ、オーダーメイド旅行を24時間の現地サポートで。'} },
-  ko: { hero:{title:'대부분의 여행자가 보지 못한 이집트를 만나보세요.',text:'프라이빗 투어, 나일 크루즈, 맞춤 여행과 24시간 현지 지원.'} },
-  hi: { hero:{title:'उस मिस्र को खोजें जिसे अधिकांश यात्री कभी नहीं देख पाते।',text:'निजी टूर, नील क्रूज़ और 24/7 स्थानीय सहायता के साथ कस्टम यात्राएँ।'} },
-  nl: { hero:{title:'Ontdek het Egypte dat de meeste reizigers nooit zien.',text:'Privétours, Nijlcruises en reizen op maat met 24/7 lokale ondersteuning.'} },
-  pl: { hero:{title:'Odkryj Egipt, którego większość podróżnych nigdy nie zobaczy.',text:'Prywatne wycieczki, rejsy po Nilu i podróże szyte na miarę z lokalnym wsparciem 24/7.'} },
-  id: { hero:{title:'Temukan Mesir yang jarang dilihat kebanyakan wisatawan.',text:'Tur privat, pelayaran Sungai Nil, dan perjalanan khusus dengan dukungan lokal 24/7.'} }
+  ar: arabic
 };
 
-const resources = Object.fromEntries(languages.map(([code]) => [code, { translation: { ...base, ...(translations[code] || {}) } }]));
+const resources = Object.fromEntries(
+  languages.map(([code]) => [
+    code,
+    {
+      translation: {
+        ...base,
+        ...(translations[code] || {})
+      }
+    }
+  ])
+);
 
-i18n.use(initReactI18next).init({ resources, lng: localStorage.getItem('ste_lang') || 'en', fallbackLng: 'en', interpolation: { escapeValue: false } });
+i18n.use(initReactI18next).init({
+  resources,
+  lng: localStorage.getItem('ste_lang') || 'en',
+  fallbackLng: 'en',
+  interpolation: { escapeValue: false }
+});
 
 export default i18n;

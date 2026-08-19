@@ -77,16 +77,16 @@ export default function Home() {
     </section>
 
     {settings.countdown.enabled && countdown && <section className="countdown-strip"><div className="container countdown-panel">
-      <div className="countdown-copy"><span className="eyebrow">Special departures</span><h2>{settings.countdown.title}</h2><p>{settings.countdown.subtitle}</p>{countdownTours.length > 0 && <div className="countdown-tour-tags">{countdownTours.map(tour => <span key={tour._id}>{tour.title}</span>)}</div>}</div>
-      <div className="countdown-timer"><div><strong>{String(countdown.days).padStart(2, '0')}</strong><span>Days</span></div><div><strong>{String(countdown.hours).padStart(2, '0')}</strong><span>Hours</span></div><div><strong>{String(countdown.minutes).padStart(2, '0')}</strong><span>Minutes</span></div><div><strong>{String(countdown.seconds).padStart(2, '0')}</strong><span>Seconds</span></div></div>
-      <Link className="btn btn-primary countdown-cta" to={countdownLink}>{settings.countdown.ctaLabel}<ArrowRight size={18}/></Link>
+      <div className="countdown-copy"><span className="eyebrow">{t('homePage.countdownEyebrow')}</span><h2>{settings.countdown.title}</h2><p>{settings.countdown.subtitle}</p>{countdownTours.length > 0 && <div className="countdown-tour-tags">{countdownTours.map(tour => <span key={tour._id}>{tour.title}</span>)}</div>}</div>
+      <div className="countdown-timer"><div><strong>{String(countdown.days).padStart(2, '0')}</strong><span>{t('homePage.days')}</span></div><div><strong>{String(countdown.hours).padStart(2, '0')}</strong><span>{t('homePage.hours')}</span></div><div><strong>{String(countdown.minutes).padStart(2, '0')}</strong><span>{t('homePage.minutes')}</span></div><div><strong>{String(countdown.seconds).padStart(2, '0')}</strong><span>{t('homePage.seconds')}</span></div></div>
+      <Link className="btn btn-primary countdown-cta" to={countdownLink}>{settings.countdown.ctaLabel || t('common.bookNow')}<ArrowRight size={18}/></Link>
     </div></section>}
 
     <section className="quick-search"><div className="container search-panel">
-      <div><label>Where do you want to go?</label><select><option>Cairo & Giza</option><option>Luxor</option><option>Aswan</option><option>Red Sea</option><option>All Egypt</option></select></div>
-      <div><label>Travel style</label><select><option>Classic Egypt</option><option>Nile Cruise</option><option>Luxury</option><option>Adventure</option><option>Family</option></select></div>
+      <div><label>{t('homePage.whereToGo')}</label><select><option>Cairo & Giza</option><option>Luxor</option><option>Aswan</option><option>Red Sea</option><option>{t('homePage.allEgypt')}</option></select></div>
+      <div><label>{t('homePage.travelStyle')}</label><select><option>{t('homePage.classicEgypt')}</option><option>{t('homePage.nileCruise')}</option><option>{t('homePage.luxury')}</option><option>{t('homePage.adventure')}</option><option>{t('homePage.family')}</option></select></div>
       <div><label>Trip length</label><select><option>1 Day</option><option>2-4 Days</option><option>5-7 Days</option><option>8-12 Days</option><option>12+ Days</option></select></div>
-      <Link to="/tours" className="btn btn-primary">Find my trip</Link>
+      <Link to="/tours" className="btn btn-primary">{t('homePage.findTrip')}</Link>
     </div></section>
 
     <section className="section"><div className="container">
@@ -95,7 +95,7 @@ export default function Home() {
     </div></section>
 
     <section className="section section-soft"><div className="container">
-      <SectionHead eyebrow="Handpicked by our Egypt experts" title={t('common.featured')} text={home.featuredText} action={<Link className="text-link" to="/tours">View all tours <ArrowRight size={17}/></Link>}/>
+      <SectionHead eyebrow={t('homePage.featuredEyebrow')} title={t('common.featured')} text={home.featuredText} action={<Link className="text-link" to="/tours">{t('homePage.viewAllTours')} <ArrowRight size={17}/></Link>}/>
       <div className="tour-grid">{homeTours.map(tour => <TourCard tour={tour} key={tour._id}/>)}</div>
     </div></section>
 
@@ -113,20 +113,20 @@ export default function Home() {
     </div></section>
 
     <section className="section"><div className="container">
-      <SectionHead eyebrow="Real guests, real journeys" title={t('common.reviews')} text="A few words from travelers who explored Egypt with us."/>
+      <SectionHead eyebrow={t('homePage.reviewsEyebrow')} title={t('common.reviews')} text={t('homePage.reviewsText')}/>
       <div className="review-grid">{home.testimonials.map((review, index) => <article className="review-card" key={`${review.name}-${index}`}><div className="stars">{Array.from({ length: 5 }).map((_, starIndex) => <Star key={starIndex} size={17} fill="currentColor"/>)}</div><p>"{review.text}"</p><div><strong>{review.name}</strong><span>{review.country} • Verified traveler</span></div></article>)}</div>
     </div></section>
 
     <section className="section section-soft"><div className="container">
-      <SectionHead eyebrow="Plan smarter" title={t('common.blog')} text="Practical Egypt travel advice from people on the ground." action={<Link className="text-link" to="/blog">All articles <ArrowRight size={17}/></Link>}/>
-      <div className="blog-grid">{home.blogPosts.map((post, index) => <article className="blog-card" key={`${post.slug || post.title}-${index}`}><img src={post.image} alt={post.title}/><div><span>{post.date}</span><h3>{post.title}</h3><p>{post.excerpt}</p><Link to="/blog">{post.ctaLabel || 'Read guide'} <ArrowRight size={16}/></Link></div></article>)}</div>
+      <SectionHead eyebrow={t('homePage.blogEyebrow')} title={t('common.blog')} text={t('homePage.blogText')} action={<Link className="text-link" to="/blog">{t('homePage.allArticles')} <ArrowRight size={17}/></Link>}/>
+      <div className="blog-grid">{home.blogPosts.map((post, index) => <article className="blog-card" key={`${post.slug || post.title}-${index}`}><img src={post.image} alt={post.title}/><div><span>{post.date}</span><h3>{post.title}</h3><p>{post.excerpt}</p><Link to="/blog">{post.ctaLabel || t('common.readGuide')} <ArrowRight size={16}/></Link></div></article>)}</div>
     </div></section>
 
     <section className="section"><div className="container">
-      <SectionHead eyebrow="Good to know" title={home.faqTitle} text={home.faqText}/>
+      <SectionHead eyebrow={t('homePage.faqEyebrow')} title={home.faqTitle} text={home.faqText}/>
       <div className="faq-list">{home.faqs.map((faq, index) => <details key={`${faq.question}-${index}`}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div>
     </div></section>
 
-    <section className="final-cta"><div className="container final-cta-inner"><div><span className="eyebrow light">Your Egypt story starts here</span><h2>{home.finalTitle}</h2><p>{home.finalText}</p></div><Link className="btn btn-light" to="/tailor-made">{home.finalButton} <ArrowRight size={18}/></Link></div></section>
+    <section className="final-cta"><div className="container final-cta-inner"><div><span className="eyebrow light">{t('homePage.finalEyebrow')}</span><h2>{home.finalTitle}</h2><p>{home.finalText}</p></div><Link className="btn btn-light" to="/tailor-made">{home.finalButton} <ArrowRight size={18}/></Link></div></section>
   </>;
 }
