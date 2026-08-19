@@ -14,13 +14,36 @@
     {
       "source": "/api/(.*)",
       "destination": {
-        "service": "api"
+        "service": "api",
+        "path": "/api/$1"
+      }
+    },
+    {
+      "source": "/assets/(.*)",
+      "destination": {
+        "service": "web",
+        "path": "/assets/$1"
+      }
+    },
+    {
+      "source": "/logo.png",
+      "destination": {
+        "service": "web",
+        "path": "/logo.png"
+      }
+    },
+    {
+      "source": "/image.png",
+      "destination": {
+        "service": "web",
+        "path": "/image.png"
       }
     },
     {
       "source": "/(.*)",
       "destination": {
-        "service": "web"
+        "service": "web",
+        "path": "/index.html"
       }
     }
   ]
