@@ -50,10 +50,10 @@ const defaultSettings = {
     embedUrl: 'https://www.google.com/maps?q=Luxor%2C%20Egypt&z=13&output=embed',
   },
   countdown: {
-    enabled: false,
+    enabled: true,
     title: 'Limited-time Egypt departures',
     subtitle: 'Reserve selected journeys before this offer closes.',
-    endDate: '',
+    endDate: '2026-12-31T23:59',
     ctaLabel: 'Book now',
     selectedTourIds: [],
   },
