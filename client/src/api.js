@@ -31,12 +31,6 @@ const REMOTE_ENABLED = Boolean(API_BASE);
 export const TOURS_UPDATED_EVENT = 'ste:tours-updated';
 export const SETTINGS_UPDATED_EVENT = 'ste:settings-updated';
 
-export const demoAdmin = {
-  email: 'admin@secrettoursegypt.com',
-  password: 'admin123',
-  token: 'ste-local-admin-token',
-};
-
 const defaultSettings = {
   companyName: 'Secret Tours Egypt',
   whatsapp: '+20 100 000 0000',
@@ -362,21 +356,12 @@ export const api = {
         return remote;
       }
 
-      if (!isLocalEnvironment()) {
-        return reject('Admin login is unavailable because the API is not connected.', 503);
-      }
-
-      const email = payload?.email?.trim().toLowerCase();
-      const password = payload?.password;
-      if (email !== demoAdmin.email || password !== demoAdmin.password) {
-        return reject('Use the demo admin credentials to access the local dashboard.', 401);
-      }
-
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(STORAGE_KEYS.adminToken, demoAdmin.token);
-      }
-
-      return withDelay({ token: demoAdmin.token, user: { email: demoAdmin.email } });
+      return reject(
+        isLocalEnvironment()
+          ? 'Admin login requires the backend API plus ADMIN_EMAIL and ADMIN_PASSWORD in the environment.'
+          : 'Admin login is unavailable because the API is not connected.',
+        503
+      );
     }
 
     if (path === '/inquiries') {

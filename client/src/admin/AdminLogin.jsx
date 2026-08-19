@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LockKeyhole } from 'lucide-react';
-import { api, demoAdmin } from '../api';
+import { api } from '../api';
 
 export default function AdminLogin() {
   const nav = useNavigate();
@@ -20,11 +20,11 @@ export default function AdminLogin() {
       localStorage.setItem('ste_admin_token', data.token);
       nav('/admin/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Could not sign in with the local demo account.');
+      setError(err.response?.data?.message || 'Could not sign in.');
     } finally {
       setLoading(false);
     }
   };
 
-  return <div className="admin-login"><div className="admin-login-card"><img src="/logo.png"/><div className="admin-lock"><LockKeyhole/></div><h1>Admin Dashboard</h1><p>Manage tours, images, requests and website content locally in your browser.</p><form onSubmit={submit}><label>Email</label><input name="email" type="email" required defaultValue={demoAdmin.email}/><label>Password</label><input name="password" type="password" required defaultValue={demoAdmin.password}/><small>Demo access: {demoAdmin.email} / {demoAdmin.password}</small>{error&&<div className="admin-error">{error}</div>}<button className="btn btn-primary wide" disabled={loading}>{loading?'Signing in...':'Sign in'}</button></form><a href="/">Back to website</a></div></div>;
+  return <div className="admin-login"><div className="admin-login-card"><img src="/logo.png"/><div className="admin-lock"><LockKeyhole/></div><h1>Admin Dashboard</h1><p>Manage tours, images, requests and website content from your secured admin account.</p><form onSubmit={submit}><label>Email</label><input name="email" type="email" required autoComplete="username"/><label>Password</label><input name="password" type="password" required autoComplete="current-password"/><small>Use the admin credentials configured in your environment variables.</small>{error&&<div className="admin-error">{error}</div>}<button className="btn btn-primary wide" disabled={loading}>{loading?'Signing in...':'Sign in'}</button></form><a href="/">Back to website</a></div></div>;
 }

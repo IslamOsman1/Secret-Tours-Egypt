@@ -12,6 +12,6 @@ const tours=[
 ];
 await connectDB();
 await Tour.deleteMany({}); await Tour.insertMany(tours);
-const email=process.env.ADMIN_EMAIL||'admin@secrettoursegypt.com'; const password=process.env.ADMIN_PASSWORD||'ChangeMe123!';
+const email=process.env.ADMIN_EMAIL; const password=process.env.ADMIN_PASSWORD;
 await User.findOneAndUpdate({email},{email,password:await bcrypt.hash(password,12),role:'admin'},{upsert:true,new:true});
 console.log('Seed complete');await mongoose.disconnect();
