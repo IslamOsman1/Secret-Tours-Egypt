@@ -259,6 +259,9 @@ function mergeSettings(settings) {
 }
 
 export function getStoredTours() {
+  if (!isLocalEnvironment()) {
+    return seedTours.map(normalizeTour);
+  }
   const stored = read(STORAGE_KEYS.tours, seedTours);
   const tours = Array.isArray(stored) && stored.length ? stored : seedTours;
   return tours.map(normalizeTour);
@@ -269,6 +272,9 @@ export function getStoredInquiries() {
 }
 
 export function getStoredSettings() {
+  if (!isLocalEnvironment()) {
+    return mergeSettings(defaultSettings);
+  }
   return mergeSettings(read(STORAGE_KEYS.settings, defaultSettings));
 }
 
