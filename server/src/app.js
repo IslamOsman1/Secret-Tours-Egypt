@@ -13,6 +13,7 @@ app.use(express.json({ limit: '2mb' }));
 
 app.get('/api/health', (req, res) => res.json({ ok: true, service: 'Secret Tours Egypt API' }));
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', authRoutes);
 app.use('/api/tours', tourRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/upload', uploadRoutes);

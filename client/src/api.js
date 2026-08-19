@@ -353,7 +353,7 @@ export const api = {
   },
 
   async post(path, payload) {
-    if (path === '/auth/login') {
+    if (path === '/auth/login' || path === '/admin/login') {
       const remote = await tryRemote('POST', path, { payload });
       if (remote) {
         if (typeof window !== 'undefined' && remote.data?.token) {

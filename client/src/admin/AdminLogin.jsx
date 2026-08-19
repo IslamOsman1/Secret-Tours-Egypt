@@ -16,7 +16,7 @@ export default function AdminLogin() {
     const form = Object.fromEntries(new FormData(event.currentTarget));
 
     try {
-      const { data } = await api.post('/auth/login', form);
+      const { data } = await api.post('/admin/login', form);
       localStorage.setItem('ste_admin_token', data.token);
       nav('/admin/dashboard');
     } catch (err) {
