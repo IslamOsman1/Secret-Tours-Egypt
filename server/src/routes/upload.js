@@ -1,0 +1,10 @@
+import express from 'express';
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../config/cloudinary.js';
+import { protect } from '../middleware/auth.js';
+const router=express.Router();
+const storage=new CloudinaryStorage({cloudinary,params:{folder:'secret-tours-egypt',allowed_formats:['jpg','jpeg','png','webp'],transformation:[{quality:'auto',fetch_format:'auto'}]}});
+const upload=multer({storage,limits:{fileSize:8*1024*1024}});
+router.post('/',protect,upload.single('image'),(req,res)=>{if(!req.file)return res.status(400).json({message:'No image uploaded'});res.status(201).json({url:req.file.path,publicId:req.file.filename})});
+export default router;
