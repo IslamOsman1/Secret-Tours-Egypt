@@ -10,9 +10,13 @@ import useSiteSettings from '../hooks/useSiteSettings';
 import { categories } from '../data/demo';
 
 function getCountdownParts(endDate) {
-  if (!endDate) return null;
+  if (!endDate) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
+  }
   const diff = new Date(endDate).getTime() - Date.now();
-  if (Number.isNaN(diff) || diff <= 0) return null;
+  if (Number.isNaN(diff) || diff <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, expired: true };
+  }
 
   const totalSeconds = Math.floor(diff / 1000);
   return {
@@ -20,6 +24,7 @@ function getCountdownParts(endDate) {
     hours: Math.floor((totalSeconds % 86400) / 3600),
     minutes: Math.floor((totalSeconds % 3600) / 60),
     seconds: totalSeconds % 60,
+    expired: false,
   };
 }
 
@@ -76,7 +81,7 @@ export default function Home() {
       </div>
     </section>
 
-    {settings.countdown.enabled && countdown && <section className="countdown-strip"><div className="container countdown-panel">
+    {settings.countdown.enabled && <section className="countdown-strip"><div className="container countdown-panel">
       <div className="countdown-copy"><span className="eyebrow">{t('homePage.countdownEyebrow')}</span><h2>{settings.countdown.title}</h2><p>{settings.countdown.subtitle}</p>{countdownTours.length > 0 && <div className="countdown-tour-tags">{countdownTours.map(tour => <span key={tour._id}>{tour.title}</span>)}</div>}</div>
       <div className="countdown-timer"><div><strong>{String(countdown.days).padStart(2, '0')}</strong><span>{t('homePage.days')}</span></div><div><strong>{String(countdown.hours).padStart(2, '0')}</strong><span>{t('homePage.hours')}</span></div><div><strong>{String(countdown.minutes).padStart(2, '0')}</strong><span>{t('homePage.minutes')}</span></div><div><strong>{String(countdown.seconds).padStart(2, '0')}</strong><span>{t('homePage.seconds')}</span></div></div>
       <Link className="btn btn-primary countdown-cta" to={countdownLink}>{settings.countdown.ctaLabel || t('common.bookNow')}<ArrowRight size={18}/></Link>
