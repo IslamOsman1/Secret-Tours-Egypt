@@ -7,7 +7,25 @@ const STORAGE_KEYS = {
   adminToken: 'ste_admin_token',
 };
 
-const API_BASE = String(import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+function resolveApiBase() {
+  const configured = String(import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '');
+
+  if (typeof window === 'undefined') {
+    return configured;
+  }
+
+  const host = window.location.hostname;
+  const isBrowserLocal = host === 'localhost' || host === '127.0.0.1';
+  const pointsToLocalhost = /localhost|127\.0\.0\.1/i.test(configured);
+
+  if (!isBrowserLocal && pointsToLocalhost) {
+    return '/api';
+  }
+
+  return configured;
+}
+
+const API_BASE = resolveApiBase();
 const REMOTE_ENABLED = Boolean(API_BASE);
 
 export const TOURS_UPDATED_EVENT = 'ste:tours-updated';
