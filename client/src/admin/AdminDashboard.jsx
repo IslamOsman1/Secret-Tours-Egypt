@@ -40,7 +40,7 @@ export default function AdminDashboard() {
   const [menu, setMenu] = useState(false);
   const [items, setItems] = useState(() => getStoredTours());
   const [inquiries, setInquiries] = useState([]);
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState(null);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -77,13 +77,13 @@ export default function AdminDashboard() {
     <main className="admin-main">
       <header className="admin-top"><button className="admin-mobile-menu" onClick={() => setMenu(true)}><Menu/></button><div><h1>{tabTitle}</h1><p>Secret Tours Egypt content manager</p></div><div className="admin-user"><span>AD</span><div><strong>Administrator</strong><small>Content & operations</small></div></div></header>
       {tab === 'overview' && <Overview tours={items} inquiries={inquiries} setTab={setTab}/>}
-      {tab === 'tours' && <ToursAdmin items={items} setItems={setItems} openModal={() => setModal(true)}/>}
+      {tab === 'tours' && <ToursAdmin items={items} setItems={setItems} openCreateModal={() => setModal({ mode: 'create' })} openEditModal={tour => setModal({ mode: 'edit', tour })}/>}
       {tab === 'inquiries' && <Inquiries data={inquiries}/>}
       {tab === 'media' && <Media/>}
       {!['overview', 'tours', 'inquiries', 'media'].includes(tab) && <SettingsPanel section={tab} tours={items}/>}
     </main>
 
-    {modal && <TourModal close={() => setModal(false)} add={tour => { setItems(value => [tour, ...value]); setModal(false); }}/>}
+    {modal && <TourModal close={() => setModal(null)} mode={modal.mode} initialTour={modal.tour} save={tour => { setItems(value => modal.mode === 'edit' ? value.map(item => item._id === tour._id ? tour : item) : [tour, ...value]); setModal(null); }}/>}
   </div>;
 }
 
@@ -91,7 +91,7 @@ function Overview({ tours, inquiries, setTab }) {
   return <div className="admin-content"><div className="stat-grid"><div><span>Live tours</span><strong>{tours.length}</strong><small>Published experiences</small></div><div><span>New inquiries</span><strong>{inquiries.length || 0}</strong><small>Needs follow-up</small></div><div><span>Languages</span><strong>15</strong><small>Frontend locales</small></div><div><span>Page editors</span><strong>6</strong><small>Dedicated page controls</small></div></div><div className="admin-panels"><section><div className="panel-head"><h2>Recent tours</h2><button onClick={() => setTab('tours')}>Manage all</button></div>{tours.slice(0, 5).map(tour => <div className="mini-row" key={tour._id}><img src={tour.image}/><div><strong>{tour.title}</strong><small>{tour.city} • ${tour.price}</small></div><span className="status live">Live</span></div>)}</section><section><div className="panel-head"><h2>Quick actions</h2></div><div className="quick-actions"><button onClick={() => setTab('tours')}><Plus/>Add a new tour</button><button onClick={() => setTab('home')}><House/>Edit home page</button><button onClick={() => setTab('general')}><Globe/>Edit global settings</button><button onClick={() => setTab('inquiries')}><MessageSquareText/>Review inquiries</button></div></section></div></div>;
 }
 
-function ToursAdmin({ items, setItems, openModal }) {
+function ToursAdmin({ items, setItems, openCreateModal, openEditModal }) {
   const [q, setQ] = useState('');
   const filtered = items.filter(item => item.title.toLowerCase().includes(q.toLowerCase()));
 
@@ -101,7 +101,7 @@ function ToursAdmin({ items, setItems, openModal }) {
     api.delete(`/tours/${id}`).catch(() => {});
   };
 
-  return <div className="admin-content"><div className="admin-toolbar"><div className="searchbox"><Search size={17}/><input value={q} onChange={event => setQ(event.target.value)} placeholder="Search tours..."/></div><button className="btn btn-primary" onClick={openModal}><Plus size={17}/> Add tour</button></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Tour</th><th>Category</th><th>Duration</th><th>Price</th><th>Status</th><th></th></tr></thead><tbody>{filtered.map(tour => <tr key={tour._id}><td><div className="tour-cell"><img src={tour.image}/><div><strong>{tour.title}</strong><small>{tour.city}</small></div></div></td><td>{tour.category}</td><td>{tour.duration}</td><td>${tour.price}</td><td><span className="status live">Published</span></td><td><div className="table-actions"><button title="Edit"><Pencil size={17}/></button><button title="Delete" onClick={() => remove(tour._id)}><Trash2 size={17}/></button></div></td></tr>)}</tbody></table></div></div>;
+  return <div className="admin-content"><div className="admin-toolbar"><div className="searchbox"><Search size={17}/><input value={q} onChange={event => setQ(event.target.value)} placeholder="Search tours..."/></div><button className="btn btn-primary" onClick={openCreateModal}><Plus size={17}/> Add tour</button></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Tour</th><th>Category</th><th>Duration</th><th>Price</th><th>Status</th><th></th></tr></thead><tbody>{filtered.map(tour => <tr key={tour._id}><td><div className="tour-cell"><img src={tour.image}/><div><strong>{tour.title}</strong><small>{tour.city}</small></div></div></td><td>{tour.category}</td><td>{tour.duration}</td><td>${tour.price}</td><td><span className="status live">Published</span></td><td><div className="table-actions"><button title="Edit" onClick={() => openEditModal(tour)}><Pencil size={17}/></button><button title="Delete" onClick={() => remove(tour._id)}><Trash2 size={17}/></button></div></td></tr>)}</tbody></table></div></div>;
 }
 
 function Inquiries({ data }) {
@@ -270,20 +270,32 @@ function SettingsPanel({ section, tours }) {
   </form></div>;
 }
 
-function TourModal({ close, add }) {
-  const [preview, setPreview] = useState('');
+function TourModal({ close, mode = 'create', initialTour, save }) {
+  const [preview, setPreview] = useState(initialTour?.image || '');
 
   const submit = async event => {
     event.preventDefault();
     const form = Object.fromEntries(new FormData(event.currentTarget));
-    const tour = { ...form, _id: Date.now().toString(), price: Number(form.price), rating: 5, reviews: 0, image: preview || 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1000&q=80', slug: form.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') };
+    const tour = {
+      ...initialTour,
+      ...form,
+      _id: initialTour?._id || Date.now().toString(),
+      price: Number(form.price),
+      rating: Number(initialTour?.rating ?? 5),
+      reviews: Number(initialTour?.reviews ?? 0),
+      featured: initialTour?.featured ?? true,
+      image: preview || initialTour?.image || 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1000&q=80',
+      slug: form.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    };
     try {
-      const { data } = await api.post('/tours', tour);
-      add(data);
+      const { data } = mode === 'edit'
+        ? await api.put(`/tours/${tour._id}`, tour)
+        : await api.post('/tours', tour);
+      save(data);
     } catch {
-      add(tour);
+      save(tour);
     }
   };
 
-  return <div className="modal-backdrop" onMouseDown={close}><div className="admin-modal" onMouseDown={event => event.stopPropagation()}><div className="panel-head"><h2>Add new tour</h2><button onClick={close}><X/></button></div><form onSubmit={submit}><label>Tour title</label><input name="title" required/><div className="field-row"><div><label>Category</label><select name="category"><option value="classic-tours">Classic tours</option><option value="nile-cruises">Nile cruises</option><option value="day-trips">Day trips</option><option value="desert-safari">Desert safari</option></select></div><div><label>Price (USD)</label><input name="price" type="number" required/></div></div><div className="field-row"><div><label>Destination</label><input name="city" required/></div><div><label>Duration</label><input name="duration" placeholder="8 Days / 7 Nights" required/></div></div><label>Short description</label><textarea name="excerpt" rows="4" required></textarea><label>Main image URL</label><input value={preview} onChange={event => setPreview(event.target.value)} placeholder="Cloudinary URL or public image URL"/><button className="btn btn-primary wide">Publish tour</button></form></div></div>;
+  return <div className="modal-backdrop" onMouseDown={close}><div className="admin-modal" onMouseDown={event => event.stopPropagation()}><div className="panel-head"><h2>{mode === 'edit' ? 'Edit tour' : 'Add new tour'}</h2><button onClick={close}><X/></button></div><form onSubmit={submit}><label>Tour title</label><input name="title" required defaultValue={initialTour?.title || ''}/><div className="field-row"><div><label>Category</label><select name="category" defaultValue={initialTour?.category || 'classic-tours'}><option value="classic-tours">Classic tours</option><option value="nile-cruises">Nile cruises</option><option value="day-trips">Day trips</option><option value="desert-safari">Desert safari</option></select></div><div><label>Price (USD)</label><input name="price" type="number" required defaultValue={initialTour?.price || ''}/></div></div><div className="field-row"><div><label>Destination</label><input name="city" required defaultValue={initialTour?.city || ''}/></div><div><label>Duration</label><input name="duration" placeholder="8 Days / 7 Nights" required defaultValue={initialTour?.duration || ''}/></div></div><label>Short description</label><textarea name="excerpt" rows="4" required defaultValue={initialTour?.excerpt || ''}></textarea><label>Main image URL</label><input value={preview} onChange={event => setPreview(event.target.value)} placeholder="Cloudinary URL or public image URL"/><button className="btn btn-primary wide">{mode === 'edit' ? 'Save tour changes' : 'Publish tour'}</button></form></div></div>;
 }

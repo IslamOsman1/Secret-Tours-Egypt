@@ -437,6 +437,26 @@ export const api = {
     return reject(`Unsupported POST ${path}`, 404);
   },
 
+  async put(path, payload) {
+    const remote = await tryRemote('PUT', path, { payload, auth: true });
+    if (remote) {
+      if (path.startsWith('/tours/')) {
+        saveTours(getStoredTours().map(item => item._id === remote.data?._id ? normalizeTour(remote.data) : item));
+      }
+      return remote;
+    }
+
+    if (!isLocalEnvironment()) {
+      return reject('Update action could not be completed because the API is not connected.', 503);
+    }
+
+    if (!path.startsWith('/tours/')) return reject(`Unsupported PUT ${path}`, 404);
+    const id = path.split('/').pop();
+    const updated = normalizeTour({ ...payload, _id: id });
+    saveTours(getStoredTours().map(item => item._id === id ? updated : item));
+    return withDelay(updated);
+  },
+
   async delete(path) {
     const remote = await tryRemote('DELETE', path, { auth: true });
     if (remote) {
